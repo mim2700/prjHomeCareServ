@@ -38,11 +38,18 @@ public class UtilityController {
 		
 	}
 	
+	@GetMapping("count-csv-rcfe")
+	public int getTotalCSVRecords() {
+		int total = careService.totalCsvDataCount("RCFE-Data-CA-Aug-2018.csv");
+		return total;
+	}
+	
 	
 	@PostMapping("reset-rcfe")
 	CSVResult csvToDatabase(@RequestBody CSVResult csvResult) {
+		
 		CSVFileRead csvFileRead	= new CSVFileRead();
-		List<RCFECsv> csvList = csvFileRead.readCSVFile("RCFE-Data-CA-Aug-2018.csv");
+		List<RCFECsv> csvList = careService.readCSVFile("RCFE-Data-CA-Aug-2018.csv");
 		careService.writeAllCsvToRCFE(csvList);
 		
 		

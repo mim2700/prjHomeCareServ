@@ -75,7 +75,16 @@ public class CSVFileRead {
 		
 		return lstRCFE;
 	}
-	
+	/**
+	 * 
+	 * @param lstCsvData
+	 * @return
+	 */
+	public int totalCsvData(List<RCFECsv> lstCsvData) {
+		int total = 0;
+		total = ( null != lstCsvData) ? lstCsvData.size(): total;
+		return total;
+	}
 	
 	
 }
