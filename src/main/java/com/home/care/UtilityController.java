@@ -44,6 +44,11 @@ public class UtilityController {
 		return total;
 	}
 	
+	@GetMapping("get-rcfe-filename")
+	public List<String> getRcfeFileNames() {
+		CSVFileRead csvFileRead = new CSVFileRead();
+		return csvFileRead.getRCFEFileNames();
+	}
 	
 	@PostMapping("reset-rcfe")
 	CSVResult csvToDatabase(@RequestBody CSVResult csvResult) {

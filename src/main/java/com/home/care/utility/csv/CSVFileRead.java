@@ -27,8 +27,11 @@
  */
 package com.home.care.utility.csv;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -43,6 +46,9 @@ import com.opencsv.bean.CsvToBeanBuilder;
  */
 public class CSVFileRead {
 	private static final Logger log = LoggerFactory.getLogger(CSVFileRead.class);
+	static String classPath 	=  	System.getProperty("user.dir");
+	static String relativePath 	=	"/src/main/resources/";
+	
 	
 	/**
 	 * 
@@ -57,8 +63,6 @@ public class CSVFileRead {
 	 * Date    		:	Feb. 8, 2022 12:46:11 a.m.
 	 */
 	public List<RCFECsv> readCSVFile(String fileName) {
-		String classPath 	=  	System.getProperty("user.dir");
-		String relativePath =	"/src/main/resources/";
 		String filePath		=	classPath+relativePath+fileName;
 		
 		List<RCFECsv>	lstRCFE	=	null;
@@ -86,5 +90,32 @@ public class CSVFileRead {
 		return total;
 	}
 	
+	/**
+	 * Get RCFE file names 
+	 * TODO later need to get fileName with help of database  
+	 * @return
+	 */
+	public List<String> getRCFEFileNames() {
+		List<String> fileNames	=	new ArrayList<String>();
+		File 	file	= new File(classPath+relativePath);
+		File[] 	files	= file.listFiles(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				if(name.toLowerCase().endsWith(".csv")) {
+					return true;
+				} else {
+					return false;	
+				}
+				
+			}
+		});
+		
+		for(File f: files) {
+			fileNames.add(f.getName());
+		}
+		
+		return fileNames;
+	}
 	
 }
