@@ -3,10 +3,13 @@
  */
 package com.home.care;
 
+import java.awt.PageAttributes.MediaType;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,16 +52,23 @@ public class UtilityController {
 		CSVFileRead csvFileRead = new CSVFileRead();
 		return csvFileRead.getRCFEFileNames();
 	}
-	
-	@PostMapping("reset-rcfe")
-	CSVResult csvToDatabase(@RequestBody CSVResult csvResult) {
+	/**
+	 * 
+	 * @param fileName
+	 * @param csvResult
+	 * @return
+	 * TODO one parameter might need in future : @RequestBody CSVResult csvResult 
+	 */
+	@CrossOrigin(origins = "http://app.homecare")
+	@PostMapping(path="reset-rcfe/{fileName}", produces = "application/json")
+	public String csvToDatabase(@PathVariable(value = "fileName") String fileName) {
 		
 		CSVFileRead csvFileRead	= new CSVFileRead();
-		List<RCFECsv> csvList = careService.readCSVFile("RCFE-Data-CA-Aug-2018.csv");
+		List<RCFECsv> csvList = careService.readCSVFile(fileName);
 		careService.writeAllCsvToRCFE(csvList);
 		
 		
-		return null;
+		return "test:testReturn";
 	}
 
 }
