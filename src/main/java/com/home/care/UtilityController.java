@@ -4,6 +4,7 @@
 package com.home.care;
 
 import java.awt.PageAttributes.MediaType;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,14 +62,13 @@ public class UtilityController {
 	 */
 	@CrossOrigin(origins = "http://app.homecare")
 	@PostMapping(path="reset-rcfe/{fileName}", produces = "application/json")
-	public String csvToDatabase(@PathVariable(value = "fileName") String fileName) {
-		
+	public HashMap<String, String> csvToDatabase(@PathVariable(value = "fileName") String fileName) {
+		HashMap<String, String> result = new HashMap<>();
 		CSVFileRead csvFileRead	= new CSVFileRead();
 		List<RCFECsv> csvList = careService.readCSVFile(fileName);
-		careService.writeAllCsvToRCFE(csvList);
-		
-		
-		return "test:testReturn";
+		int recordSize = careService.writeAllCsvToRCFE(csvList);
+		result.put("records", String.valueOf(recordSize));
+		return result;
 	}
 
 }

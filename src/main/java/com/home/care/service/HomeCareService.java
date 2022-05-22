@@ -101,11 +101,11 @@ public class HomeCareService {
 		return total;
 	}
 	
-	public void writeAllCsvToRCFE(List<RCFECsv> csvData) {
+	public int writeAllCsvToRCFE(List<RCFECsv> csvData) {
 		CsvToDataUtil csvToDataUtil	=	new CsvToDataUtil();
 		List<RCFEData> rcfeDatas = csvToDataUtil.utilGetRcfeCsvToDataList(csvData);
 		
-		writeAllToRCFETable(rcfeDatas);
+		return writeAllToRCFETable(rcfeDatas);
 		
 	}
 	
@@ -119,8 +119,12 @@ public class HomeCareService {
 	 * purpose		: Call JPA to write csv data to Database
 	 *
 	 * Date    		:	Feb. 23, 2022 6:58:11 p.m.
+	 * TODO : Need to use truncate table before save all the data 
+	 * https://stackoverflow.com/questions/52989131/is-it-possible-to-use-truncate-in-spring-data-jpa-using-jparepository-or-a-mo
 	 */
-	private void writeAllToRCFETable(List<RCFEData> data) {
-		List result = careDbRepository.saveAll(data);
+	private int writeAllToRCFETable(List<RCFEData> data) {
+		
+		List<RCFEData> result = careDbRepository.saveAll(data);
+		return result.size();
 	}
 }
