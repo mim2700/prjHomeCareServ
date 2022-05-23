@@ -27,6 +27,8 @@
  */
 package com.home.care.db;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -49,5 +51,12 @@ public interface HomeCareDbRepository extends JpaRepository<RCFEData, RcfeFacili
             nativeQuery = true
     )
 	void truncateRCFETable();
+	
+	@Query(
+			value = "select distinct CountyName  from rcfe order by CountyName ASC",
+			nativeQuery = true
+			)
+	List<String> getCountyNames();
+	
 
 }

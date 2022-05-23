@@ -26,7 +26,7 @@ import com.home.care.utility.csv.CSVFileRead;
  *
  */
 @RestController
-@RequestMapping(path = "/homecare")
+@RequestMapping(path = "/homecare/util")
 public class UtilityController {
 	@Autowired
 	HomeCareService	careService;
@@ -70,5 +70,7 @@ public class UtilityController {
 		result.put("records", String.valueOf(recordSize));
 		return result;
 	}
+	
+	
 
 }

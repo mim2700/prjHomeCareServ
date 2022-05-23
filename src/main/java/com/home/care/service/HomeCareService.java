@@ -132,4 +132,13 @@ public class HomeCareService {
 		List<RCFEData> result = careDbRepository.saveAll(data);
 		return result.size();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<String> getCountyNames() {
+		return careDbRepository.getCountyNames();
+	}
+	
 }
