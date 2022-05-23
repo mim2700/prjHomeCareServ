@@ -31,12 +31,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
+import javax.transaction.Transaction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.home.care.bo.RCFECsv;
 import com.home.care.bo.RCFEData;
@@ -122,8 +125,10 @@ public class HomeCareService {
 	 * TODO : Need to use truncate table before save all the data 
 	 * https://stackoverflow.com/questions/52989131/is-it-possible-to-use-truncate-in-spring-data-jpa-using-jparepository-or-a-mo
 	 */
+	@Transactional
 	private int writeAllToRCFETable(List<RCFEData> data) {
 		
+		careDbRepository.truncateRCFETable();
 		List<RCFEData> result = careDbRepository.saveAll(data);
 		return result.size();
 	}

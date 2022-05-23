@@ -28,7 +28,10 @@
 package com.home.care.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.home.care.bo.RCFEData;
 import com.home.care.bo.RcfeFacility;
@@ -39,5 +42,12 @@ import com.home.care.bo.RcfeFacility;
  */
 @Repository
 public interface HomeCareDbRepository extends JpaRepository<RCFEData, RcfeFacility>{
+	@Transactional
+	@Modifying
+    @Query(
+            value = "truncate table rcfe",
+            nativeQuery = true
+    )
+	void truncateRCFETable();
 
 }
