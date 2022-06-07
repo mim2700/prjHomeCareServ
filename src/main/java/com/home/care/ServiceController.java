@@ -4,14 +4,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.home.care.bo.CityZipData;
+import com.home.care.bo.RCFEData;
 import com.home.care.service.HomeCareService;
 
 @RestController
 @RequestMapping(path = "/homecare/service")
+@CrossOrigin(origins = "http://app.homecare")
 public class ServiceController {
 	@Autowired
 	HomeCareService careService;
@@ -21,5 +27,10 @@ public class ServiceController {
 		return careService.getCountyNames();
 	}
 	
+	@GetMapping(path = "city-zip/{paramValue}", produces = "application/json") 
+	public List<CityZipData>  getCityZip(@PathVariable (value = "paramValue") String paramValue) {
+		System.out.println("city-zip : "+paramValue);
+		return careService.searchByCityZipLike(paramValue);
+	}
 
 }

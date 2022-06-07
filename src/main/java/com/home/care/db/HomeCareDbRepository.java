@@ -32,9 +32,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.home.care.bo.CityZipData;
 import com.home.care.bo.RCFEData;
 import com.home.care.bo.RcfeFacility;
 
@@ -59,4 +61,11 @@ public interface HomeCareDbRepository extends JpaRepository<RCFEData, RcfeFacili
 	List<String> getCountyNames();
 	
 
+	//@Query(value = "select FacilityNumber, FacilityCity, FacilityZip from rcfe r  where (r.FacilityCity LIKE :strParam% or r.FacilityZip LIKE :strParam%)",
+	@Query(value = "select distinct new CityZipData(r.facilityCity, r.facilityZip) from RCFEData r  where (r.facilityCity LIKE :strParam% or r.facilityZip LIKE :strParam%)",
+			nativeQuery = false
+		)
+	List<CityZipData> searchByCityZipLike(@Param("strParam") String strParam);
+	
+	
 }

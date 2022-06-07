@@ -97,7 +97,7 @@ public class RCFEData implements Serializable {
 	@Column(name = "POCDates")
 	private String pocDates;
 	
-	  @Column(name = "AllVisitDates") 
+	 @Column(name = "AllVisitDates")
 	  private String allVisitDates;
 	 
 	@Column(name = "InspectionVisitDates")

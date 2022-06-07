@@ -37,10 +37,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.home.care.bo.CityZipData;
 import com.home.care.bo.RCFECsv;
 import com.home.care.bo.RCFEData;
 import com.home.care.db.HomeCareDbRepository;
@@ -139,6 +141,16 @@ public class HomeCareService {
 	 */
 	public List<String> getCountyNames() {
 		return careDbRepository.getCountyNames();
+	}
+	
+	/**
+	 * 
+	 * @param strParam
+	 * @return
+	 */
+	public List<CityZipData> searchByCityZipLike(String strParam) {
+		System.out.println("searchByCityZipLike : "+ careDbRepository.searchByCityZipLike(strParam));
+		return careDbRepository.searchByCityZipLike(strParam);
 	}
 	
 }
