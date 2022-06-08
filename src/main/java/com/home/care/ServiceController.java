@@ -29,7 +29,6 @@ public class ServiceController {
 	
 	@GetMapping(path = "city-zip/{paramValue}", produces = "application/json") 
 	public List<CityZipData>  getCityZip(@PathVariable (value = "paramValue") String paramValue) {
-		System.out.println("city-zip : "+paramValue);
 		return careService.searchByCityZipLike(paramValue);
 	}
 

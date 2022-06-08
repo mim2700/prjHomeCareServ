@@ -149,7 +149,6 @@ public class HomeCareService {
 	 * @return
 	 */
 	public List<CityZipData> searchByCityZipLike(String strParam) {
-		System.out.println("searchByCityZipLike : "+ careDbRepository.searchByCityZipLike(strParam));
 		return careDbRepository.searchByCityZipLike(strParam);
 	}
 	

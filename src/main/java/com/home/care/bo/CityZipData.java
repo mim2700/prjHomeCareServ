@@ -28,6 +28,7 @@ public class CityZipData implements Serializable{
 	private String facilityCity;
 	@Column(name = "FacilityZip")
 	private String facilityZip;
+	private long facilityCount;
 	
 	
 	public CityZipData(RcfeFacility facilityNumber, String facilityCity, String facilityZip) {
@@ -36,6 +37,14 @@ public class CityZipData implements Serializable{
 		this.facilityCity = facilityCity;
 		this.facilityZip = facilityZip;
 	}
+	
+	public CityZipData(long facilityCount, String facilityCity, String facilityZip) {
+		super();
+		this.facilityCount = facilityCount;
+		this.facilityCity = facilityCity;
+		this.facilityZip = facilityZip;
+	}
+	
 	
 	/**
 	 * @param facilityCity
@@ -82,6 +91,20 @@ public class CityZipData implements Serializable{
 	 */
 	public void setFacilityZip(String facilityZip) {
 		this.facilityZip = facilityZip;
+	}
+
+	/**
+	 * @return the facilityCount
+	 */
+	public long getFacilityCount() {
+		return facilityCount;
+	}
+
+	/**
+	 * @param facilityCount the facilityCount to set
+	 */
+	public void setFacilityCount(long facilityCount) {
+		this.facilityCount = facilityCount;
 	}
 	
 	

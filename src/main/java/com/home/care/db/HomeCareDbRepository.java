@@ -62,7 +62,7 @@ public interface HomeCareDbRepository extends JpaRepository<RCFEData, RcfeFacili
 	
 
 	//@Query(value = "select FacilityNumber, FacilityCity, FacilityZip from rcfe r  where (r.FacilityCity LIKE :strParam% or r.FacilityZip LIKE :strParam%)",
-	@Query(value = "select distinct new CityZipData(r.facilityCity, r.facilityZip) from RCFEData r  where (r.facilityCity LIKE :strParam% or r.facilityZip LIKE :strParam%)",
+	@Query(value = "select distinct new CityZipData(count(r.facilityNumber), r.facilityCity, r.facilityZip) from RCFEData r  where (r.facilityCity LIKE :strParam% or r.facilityZip LIKE :strParam%) Group by FacilityZip,  FacilityCity",
 			nativeQuery = false
 		)
 	List<CityZipData> searchByCityZipLike(@Param("strParam") String strParam);
