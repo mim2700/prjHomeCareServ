@@ -31,5 +31,13 @@ public class ServiceController {
 	public List<CityZipData>  getCityZip(@PathVariable (value = "paramValue") String paramValue) {
 		return careService.searchByCityZipLike(paramValue);
 	}
+	
+	@GetMapping(path = "search/city/{paramCity}/zip/{paramZip}", produces = "application/json")
+	public List<RCFEData> getAllByCityZipLike(
+												@PathVariable (value = "paramCity") String paramCity,
+												@PathVariable (value = "paramZip") String paramZip
+												) {
+		return careService.getAllByCityZipLike(paramCity, paramZip);
+	}
 
 }

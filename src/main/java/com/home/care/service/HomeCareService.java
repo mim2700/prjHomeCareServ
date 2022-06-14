@@ -151,5 +151,15 @@ public class HomeCareService {
 	public List<CityZipData> searchByCityZipLike(String strParam) {
 		return careDbRepository.searchByCityZipLike(strParam);
 	}
+
+	/**
+	 * 
+	 * @param strParamCity
+	 * @param strParamZip
+	 * @return
+	 */
+	public List<RCFEData> getAllByCityZipLike(String strParamCity, String strParamZip) {
+		return careDbRepository.getAllByCityZipLike(strParamCity,strParamZip);
+	}
 	
 }
