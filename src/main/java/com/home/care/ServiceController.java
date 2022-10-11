@@ -32,12 +32,24 @@ public class ServiceController {
 		return careService.searchByCityZipLike(paramValue);
 	}
 	
-	@GetMapping(path = "search/city/{paramCity}/zip/{paramZip}", produces = "application/json")
+	//@GetMapping(path = "search/city/{paramCity}/zip/{paramZip}", produces = "application/json")
+	/*
 	public List<RCFEData> getAllByCityZipLike(
 												@PathVariable (value = "paramCity") String paramCity,
 												@PathVariable (value = "paramZip") String paramZip
 												) {
+		
 		return careService.getAllByCityZipLike(paramCity, paramZip);
+	}
+	*/
+	
+	@GetMapping(path = "search/city/{paramCity}/zip/{paramZip}", produces = "application/json")
+	public List<RCFEData> getRcfeByCityZip(	
+											@PathVariable (value = "paramCity") String paramCity,
+											@PathVariable (value = "paramZip") String paramZip
+										) {
+		
+		return careService.getRcfeByCityZip(paramCity, paramZip);
 	}
 
 }

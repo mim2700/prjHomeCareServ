@@ -162,4 +162,14 @@ public class HomeCareService {
 		return careDbRepository.getAllByCityZipLike(strParamCity,strParamZip);
 	}
 	
+	/**
+	 * 
+	 * @param strParamCity
+	 * @param strParamZip
+	 * @return
+	 */
+	public List<RCFEData> getRcfeByCityZip(String strParamCity, String strParamZip) {
+		return careDbRepository.getRcfeByCityZip(strParamCity, strParamZip);
+	}
+	
 }

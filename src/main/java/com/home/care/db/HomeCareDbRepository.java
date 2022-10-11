@@ -71,4 +71,8 @@ public interface HomeCareDbRepository extends JpaRepository<RCFEData, RcfeFacili
 			nativeQuery = true)
 	List<RCFEData> getAllByCityZipLike(@Param("strParamCity") String strParamCity, @Param("strParamZip") String strParamZip);
 	
+	@Query(value="select * from rcfe r where r.FacilityCity like :strParamCity and r.FacilityZip like :strParamZip", 
+			nativeQuery=true)
+	List<RCFEData> getRcfeByCityZip(@Param("strParamCity") String strParamCity, @Param("strParamZip") String strParamZip);
+	
 }
