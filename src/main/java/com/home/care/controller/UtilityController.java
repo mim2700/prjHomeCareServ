@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.home.care;
+package com.home.care.controller;
 
 import java.awt.PageAttributes.MediaType;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.home.care;
+package com.home.care.controller;
 
 import java.util.HashMap;
 import java.util.List;
