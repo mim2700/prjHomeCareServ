@@ -19,7 +19,7 @@ import com.home.care.db.UserRepo;
 public class UserService {
 	@Autowired
 	UserRepo userRepo; 
-
+	
 	public User register(User user ) {
 		return userRepo.save(user);
 	}
