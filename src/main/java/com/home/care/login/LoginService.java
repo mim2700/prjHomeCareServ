@@ -3,6 +3,8 @@
  */
 package com.home.care.login;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,4 +23,10 @@ public class LoginService {
 		User user = loginUser.getUser();
 		return new LoginUser(userRepo.save(user));
 	}
+	
+	public Optional<User> findByEmail(String strParamEmail) {
+		return userRepo.findByEmail(strParamEmail);
+		
+	}
+	
 }

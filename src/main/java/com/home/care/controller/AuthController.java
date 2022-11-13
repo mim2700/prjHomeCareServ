@@ -4,6 +4,8 @@
 package com.home.care.controller;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.home.care.bo.User;
 import com.home.care.login.LoginService;
 import com.home.care.login.LoginUser;
 
@@ -37,5 +40,17 @@ public class AuthController {
 		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return loginService.register(user);
+	}
+	
+	@PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public LoginUser login(@RequestBody LoginUser loginUser) {
+		User user = loginService.findByEmail(loginUser.getEmail())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials or User does not exists"));
+		
+		if(!passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
+		}
+								
+		return new LoginUser(user);
 	}
 }
