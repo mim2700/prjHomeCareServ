@@ -4,6 +4,7 @@
 package com.home.care.controller;
 
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.home.care.bo.User;
 import com.home.care.login.LoginService;
 import com.home.care.login.LoginUser;
+import com.home.care.login.Token;
+
+import io.jsonwebtoken.security.InvalidKeyException;
 
 /**
  * @author bhabesh
@@ -43,14 +47,15 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public LoginUser login(@RequestBody LoginUser loginUser) {
+	public Token login(@RequestBody LoginUser loginUser) {
 		User user = loginService.findByEmail(loginUser.getEmail())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials or User does not exists"));
 		
 		if(!passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
 		}
-								
-		return new LoginUser(user);
+		
+		return loginService.getToken(user);
+
 	}
 }
