@@ -7,6 +7,9 @@ package com.home.care.controller;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.home.care.bo.User;
+import com.home.care.login.Login;
 import com.home.care.login.LoginService;
 import com.home.care.login.LoginUser;
 import com.home.care.login.Token;
@@ -58,4 +62,25 @@ public class AuthController {
 		return loginService.getToken(user);
 
 	}
+	
+	@PostMapping(value = "/login2", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+	public Token login2(@RequestBody LoginUser loginUser, HttpServletResponse response) {
+		User user = loginService.findByEmail(loginUser.getEmail())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials or User does not exists"));
+		
+		if(!passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Credentials");
+		}
+		
+		Login login	= loginService.login(user);
+		
+		Cookie cookie = new Cookie("refresh_token", login.getRefreshToken().toString());
+		cookie.setMaxAge(3600);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/api");
+		response.addCookie(cookie);
+		
+		return login.getAccessToken();
+
+	}	
 }

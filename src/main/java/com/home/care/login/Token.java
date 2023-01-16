@@ -71,4 +71,11 @@ public class Token {
 		messageDigest.update(secretKey.getBytes(StandardCharsets.UTF_8));
 		return messageDigest.digest();
 	}
+
+	@Override
+	public String toString() {
+		return token;
+	}
+	
+	
 }
