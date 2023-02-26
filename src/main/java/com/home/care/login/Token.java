@@ -11,6 +11,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
@@ -37,7 +39,15 @@ public class Token {
 	public static Token of(String errMsg) {
 		return new Token (errMsg);
 	}
-	
+	/**
+	 * 
+	 * @param userid
+	 * @param validityInMinutes
+	 * @param secretKey
+	 * @return
+	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Token of(Long userid, Long validityInMinutes, String secretKey ) throws InvalidKeyException, NoSuchAlgorithmException {
 		Instant issueDate = Instant.now();
 		String token = Jwts.builder()
@@ -48,6 +58,25 @@ public class Token {
 							.compact();
 		
 		return new Token (token);
+	}
+	
+	/**
+	 * 
+	 * @param token
+	 * @param secretKey
+	 * @return
+	 */
+	public static Claims getClaim(String token, String secretKey) {
+		Claims claims	= null;
+		try {
+			claims = (Claims)Jwts.parser()
+						 .setSigningKey(getSigningKey(secretKey))
+						 .parse(token)
+						 .getBody();
+		} catch (JwtException | ClassCastException | NoSuchAlgorithmException e) {
+				System.out.println(e.getMessage());
+		}
+		return claims;
 	}
 	
 	/**
