@@ -8,11 +8,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.home.care.bo.User;
+import com.home.care.bo.Userface;
 import com.home.care.db.UserRepo;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.InvalidKeyException;
 
 /**
@@ -34,6 +38,11 @@ public class LoginService {
 	
 	public Optional<User> findByEmail(String strParamEmail) {
 		return userRepo.findByEmail(strParamEmail);
+		
+	}
+
+	public Optional<Userface> findByUserId(Long longParamId) {
+		return userRepo.findByUserId(longParamId);
 		
 	}
 	
@@ -61,6 +70,18 @@ public class LoginService {
 			return Login.of(e.getMessage());
 		}
 		
+	}
+	
+	public Long getAccessClaim(String token, String searchString) throws ResponseStatusException{
+		
+		Long userId = 0L;
+		try {
+			Claims claims = Token.getClaim(token, accessTokenSecret);
+			userId = Long.valueOf((Integer)claims.get(searchString));
+		}catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token not exists or expired");
+		}
+		return userId;
 	}
 	
 }

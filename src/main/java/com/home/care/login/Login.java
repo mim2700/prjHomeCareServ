@@ -56,8 +56,8 @@ public class Login {
 	
 	public static Login of (Long userid, String accessSecret, String refreshSecret) throws InvalidKeyException, NoSuchAlgorithmException {
 		return new Login(
-				Token.of(userid, 1L, accessSecret),
-				Token.of(userid, 1L, refreshSecret)
+				Token.of(userid, 5L, accessSecret),
+				Token.of(userid, 5L, refreshSecret)
 				);
 	}
 }

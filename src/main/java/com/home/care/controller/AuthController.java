@@ -8,12 +8,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.home.care.bo.User;
+import com.home.care.bo.Userface;
 import com.home.care.login.Login;
 import com.home.care.login.LoginService;
 import com.home.care.login.LoginUser;
@@ -82,5 +85,14 @@ public class AuthController {
 		
 		return login.getAccessToken();
 
-	}	
+	}
+	
+	@GetMapping(value = "/user")
+	public Userface getUser(HttpServletRequest request) {
+		String token = (String) request.getAttribute("token");
+		Long userid = loginService.getAccessClaim(token, "userid");
+		Userface user = loginService.findByUserId(userid)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data not available! Try again later"));
+		return user;
+	}
 }
