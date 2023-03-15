@@ -31,6 +31,9 @@ public class LoginService {
 	@Value("${application.security.refresh.token.secret}")
 	String refreshTokenSecret;
 	
+	Long ACCESS_TOKEN_VALIDITY	= 10L;
+	Long REFRESH_TOKEN_VALIDITY = 10L;
+	
 	public LoginUser register(LoginUser loginUser) {
 		User user = loginUser.getUser();
 		return new LoginUser(userRepo.save(user));
@@ -48,7 +51,7 @@ public class LoginService {
 	
 	public Token getToken(User user)  {
 		try {
-			return Token.of(user.getId(), 10L, accessTokenSecret);
+			return Token.of(user.getId(), ACCESS_TOKEN_VALIDITY, accessTokenSecret);
 		} catch (InvalidKeyException | NoSuchAlgorithmException e) {
 			return Token.of(e.getMessage());
 		}
@@ -56,7 +59,7 @@ public class LoginService {
 
 	public Token getToken(User user, String secretKey)  {
 		try {
-			return Token.of(user.getId(), 10L, secretKey);
+			return Token.of(user.getId(), ACCESS_TOKEN_VALIDITY, secretKey);
 		} catch (InvalidKeyException | NoSuchAlgorithmException e) {
 			return Token.of(e.getMessage());
 		}
@@ -65,7 +68,7 @@ public class LoginService {
 	
 	public Login login(User user) {
 		try {
-			return Login.of(user.getId(), accessTokenSecret, refreshTokenSecret);
+			return Login.of(user.getId(), accessTokenSecret, refreshTokenSecret, ACCESS_TOKEN_VALIDITY, REFRESH_TOKEN_VALIDITY);
 		} catch (InvalidKeyException | NoSuchAlgorithmException e) {
 			return Login.of(e.getMessage());
 		}
@@ -82,6 +85,29 @@ public class LoginService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token not exists or expired");
 		}
 		return userId;
+	}
+
+	public Long getRefreshClaim(String token, String searchString) throws ResponseStatusException{
+		
+		Long userId = 0L;
+		try {
+			Claims claims = Token.getClaim(token, accessTokenSecret);
+			userId = Long.valueOf((Integer)claims.get(searchString));
+		}catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token not exists or expired");
+		}
+		return userId;
+	}	
+	
+	
+	public Login refreshAccess(String strRefreshToken) {
+		Long userId = getRefreshClaim(strRefreshToken, "userid");
+		User user	= new User();
+		user.setId(userId);
+		Token accessToken = getToken(user);
+		Token refreshToken = Token.of(strRefreshToken);
+		
+		return Login.of(accessToken, refreshToken);
 	}
 	
 }

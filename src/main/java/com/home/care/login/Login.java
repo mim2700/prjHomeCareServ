@@ -54,10 +54,18 @@ public class Login {
 		this.refreshToken = refreshToken;
 	}
 	
-	public static Login of (Long userid, String accessSecret, String refreshSecret) throws InvalidKeyException, NoSuchAlgorithmException {
+	public static Login of (Long userid, String accessSecret, String refreshSecret, Long accessTokenValidity, Long refreshTokenValidity) throws InvalidKeyException, NoSuchAlgorithmException {
 		return new Login(
-				Token.of(userid, 5L, accessSecret),
-				Token.of(userid, 5L, refreshSecret)
+				Token.of(userid, accessTokenValidity, accessSecret),
+				Token.of(userid, refreshTokenValidity, refreshSecret)
 				);
+	}
+	
+	public static Login of(Token accessToken, Token refreshToken) {
+			return new Login(accessToken, refreshToken);
+	}
+	
+	public static Login of(Long userid, String accessSecret, Token refreshToken, Long accessTokenValidity) throws InvalidKeyException, NoSuchAlgorithmException {
+		 return new Login(Token.of(userid, accessTokenValidity, accessSecret),refreshToken);
 	}
 }

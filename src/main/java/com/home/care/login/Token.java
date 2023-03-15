@@ -36,8 +36,8 @@ public class Token {
 		this.token = token;
 	}
 	
-	public static Token of(String errMsg) {
-		return new Token (errMsg);
+	public static Token of(String str) {
+		return new Token (str);
 	}
 	/**
 	 * 

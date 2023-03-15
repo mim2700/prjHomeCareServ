@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -94,5 +95,10 @@ public class AuthController {
 		Userface user = loginService.findByUserId(userid)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User data not available! Try again later"));
 		return user;
+	}
+	
+	@PostMapping (value="/refresh")
+	public Token refresh(@CookieValue("refresh_token") String refreshToken) {
+		return loginService.refreshAccess(refreshToken).getAccessToken();
 	}
 }
